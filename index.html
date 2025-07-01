@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saad-Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@2.0.8/dist/lottie-player.js"></script>
+
+
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: "Poppins", sans-serif;
+        }
+
+        .box {
+            height: 500px;
+            width: 500px;
+        }
+
+        .card {
+            margin: 0 auto;
+            padding: 2em;
+            width: 70%;
+            background: #1c1f2b;
+            text-align: center;
+            border-radius: 10px;
+            position: relative;
+        }
+
+        @property --angle {
+            syntax: "<angle>";
+            initial-value: 0deg;
+            inherits: false;
+        }
+
+        .card::after,
+        .card::before {
+            content: '';
+            position: absolute;
+            height: 99%;
+            width: 99%;
+            background-image: conic-gradient(from var(--angle), #ff4545, #00ff99, #006aff, #ff0095, #ff4545);
+            top: 50%;
+            left: 50%;
+            translate: -50% -50%;
+            z-index: -1;
+
+            border-radius: 10px;
+            animation: 3s spin linear infinite;
+        }
+
+        .card::before {
+            filter: blur(1.5rem);
+            opacity: 0.5;
+        }
+
+        @keyframes spin {
+            from {
+                --angle: 0deg;
+            }
+
+            to {
+                --angle: 360deg;
+            }
+        }
+
+        .invalid-feedback,
+        .empty-feedback {
+            display: none;
+        }
+
+        .was-validated :placeholder-shown:invalid~.empty-feedback {
+            display: block;
+        }
+
+        .was-validated :not(:placeholder-shown):invalid~.invalid-feedback {
+            display: block;
+        }
+
+        .is-invalid,
+        .was-validated :invalid {
+            border-color: #dc3545;
+        }
+
+        #txt {
+            display: none;
+        }
+    </style>
+    <script>
+        (function () {
+            "use strict";
+            /*
+             * Form Validation
+             */
+
+            // Fetch all the forms we want to apply custom validation styles to
+            const forms = document.querySelectorAll(".needs-validation");
+            const result = document.getElementById("result");
+            // Loop over them and prevent submission
+            Array.prototype.slice.call(forms).forEach(function (form) {
+                form.addEventListener(
+                    "submit",
+                    function (event) {
+                        if (!form.checkValidity()) {
+                            event.preventDefault();
+                            event.stopPropagation();
+
+                            form.querySelectorAll(":invalid")[0].focus();
+                        } else {
+                            /*
+                             * Form Submission using fetch()
+                             */
+
+                            const formData = new FormData(form);
+                            event.preventDefault();
+                            event.stopPropagation();
+                            const object = {};
+                            formData.forEach((value, key) => {
+                                object[key] = value;
+                            });
+                            const json = JSON.stringify(object);
+                            result.innerHTML = "Please wait...";
+
+                            fetch("https://api.web3forms.com/submit", {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                    Accept: "application/json"
+                                },
+                                body: json
+                            })
+                                .then(async (response) => {
+                                    let json = await response.json();
+                                    if (response.status == 200) {
+                                        result.innerHTML = json.message;
+                                        result.classList.remove("text-gray-500");
+                                        result.classList.add("text-green-500");
+                                    } else {
+                                        console.log(response);
+                                        result.innerHTML = json.message;
+                                        result.classList.remove("text-gray-500");
+                                        result.classList.add("text-red-500");
+                                    }
+                                })
+                                .catch((error) => {
+                                    console.log(error);
+                                    result.innerHTML = "Something went wrong!";
+                                })
+                                .then(function () {
+                                    form.reset();
+                                    form.classList.remove("was-validated");
+                                    setTimeout(() => {
+                                        result.style.display = "none";
+                                    }, 5000);
+                                });
+                        }
+                        form.classList.add("was-validated");
+                    },
+                    false
+                );
+            });
+        })();
+    </script>
+</head>
+
+<body>
+
+    <div id="sabsemain">
+        <div class="fixed left-0 top-0 -z-10 h-full w-full">
+            <div
+                class="absolute inset-0 -z-10 h-full w-full items-center px-5 py-24 [background:radial-gradient(125%_125%_at_50%_10%,#000_40%,#31205f_100%)]">
+            </div>
+        </div>
+
+        <header>
+
+            <nav class="relative bg-black w-full">
+                <div class="max-w-screen-xl mx-auto flex flex-wrap items-center justify-between p-4 relative">
+
+                    <!-- Logo (left) -->
+                    <div class="flex items-center">
+                        <img src="./logo4.png" class="h-8" alt="Logo" />
+                    </div>
+
+                    <!-- Social Icons (top-right corner) -->
+                    <div class="absolute top-4 right-4 md:static md:order-3 flex items-center gap-4">
+                        <!-- LinkedIn -->
+                        <a href="https://www.linkedin.com/in/saad-faisal-1677a0217/"
+                            class="text-gray-300 hover:text-purple-400 transition" aria-label="LinkedIn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0,0,256,256"
+                                fill="#ffffff">
+                                <g transform="scale(8.53333,8.53333)">
+                                    <path
+                                        d="M24,4h-18c-1.105,0 -2,0.895 -2,2v18c0,1.105 0.895,2 2,2h18c1.105,0 2,-0.895 2,-2v-18c0,-1.105 -0.895,-2 -2,-2zM10.954,22h-2.95v-9.492h2.95zM9.449,11.151c-0.951,0 -1.72,-0.771 -1.72,-1.72c0,-0.949 0.77,-1.719 1.72,-1.719c0.948,0 1.719,0.771 1.719,1.719c0,0.949 -0.771,1.72 -1.719,1.72zM22.004,22h-2.948v-4.616c0,-1.101 -0.02,-2.517 -1.533,-2.517c-1.535,0 -1.771,1.199 -1.771,2.437v4.696h-2.948v-9.492h2.83v1.297h0.04c0.394,-0.746 1.356,-1.533 2.791,-1.533c2.987,0 3.539,1.966 3.539,4.522z">
+                                    </path>
+                                </g>
+                            </svg>
+                        </a>
+
+                        <!-- GitHub -->
+                        <a href="https://github.com/Saad-F17" class="text-gray-300 hover:text-purple-400 transition"
+                            aria-label="GitHub">
+                            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M12.026 2C7.13295 1.99937 2.96183 5.54799 2.17842 10.3779C1.395 15.2079 4.23061 19.893 8.87302 21.439C9.37302 21.529 9.55202 21.222 9.55202 20.958C9.55202 20.721 9.54402 20.093 9.54102 19.258C6.76602 19.858 6.18002 17.92 6.18002 17.92C5.99733 17.317 5.60459 16.7993 5.07302 16.461C4.17302 15.842 5.14202 15.856 5.14202 15.856C5.78269 15.9438 6.34657 16.3235 6.66902 16.884C6.94195 17.3803 7.40177 17.747 7.94632 17.9026C8.49087 18.0583 9.07503 17.99 9.56902 17.713C9.61544 17.207 9.84055 16.7341 10.204 16.379C7.99002 16.128 5.66202 15.272 5.66202 11.449C5.64973 10.4602 6.01691 9.5043 6.68802 8.778C6.38437 7.91731 6.42013 6.97325 6.78802 6.138C6.78802 6.138 7.62502 5.869 9.53002 7.159C11.1639 6.71101 12.8882 6.71101 14.522 7.159C16.428 5.868 17.264 6.138 17.264 6.138C17.6336 6.97286 17.6694 7.91757 17.364 8.778C18.0376 9.50423 18.4045 10.4626 18.388 11.453C18.388 15.286 16.058 16.128 13.836 16.375C14.3153 16.8651 14.5612 17.5373 14.511 18.221C14.511 19.555 14.499 20.631 14.499 20.958C14.499 21.225 14.677 21.535 15.186 21.437C19.8265 19.8884 22.6591 15.203 21.874 10.3743C21.089 5.54565 16.9181 1.99888 12.026 2Z">
+                                </path>
+                            </svg>
+                        </a>
+                    </div>
+
+                    <!-- Navigation Links -->
+                    <div class="w-full md:w-auto order-2 md:order-1 mt-4 md:mt-0">
+                        <ul class="flex flex-col md:flex-row items-center gap-4 text-white font-medium">
+                            <li><a href="#Home" class="hover:text-purple-400">Home</a></li>
+                            <li><a href="#About" class="hover:text-purple-400">About</a></li>
+                            <li><a href="#Education" class="hover:text-purple-400">Education</a></li>
+                            <li><a href="#Skills" class="hover:text-purple-400">Skills</a></li>
+                            <li><a href="#Experience" class="hover:text-purple-400">Experience</a></li>
+                            <li><a href="#Project" class="hover:text-purple-400">Project</a></li>
+                            <li><a href="#Contact" class="hover:text-purple-400">Contact</a></li>
+                        </ul>
+                    </div>
+
+                </div>
+            </nav>
+
+        </header>
+
+
+
+
+        <main class="text-white">
+           <div id="Home" class="flex flex-col-reverse lg:flex-row items-center justify-between px-6 md:px-12 lg:px-28 py-16 gap-10">
+  
+  <!-- Left Text Content -->
+  <div class="w-full lg:w-1/2 text-center lg:text-left">
+    <h1 class="text-white text-3xl sm:text-4xl md:text-5xl pb-3">
+      Hi all, I'm <span class="text-purple-600">Saad</span> 👋
+    </h1>
+    <p class="text-white text-2xl sm:text-3xl pb-2">and I am a passionate</p>
+    <p class="pb-8 text-purple-600 text-2xl sm:text-3xl"><span id="element"></span></p>
+
+    <!-- Buttons -->
+    <div class="flex flex-col sm:flex-row items-center gap-4 justify-center lg:justify-start">
+      <a href="#Contact">
+        <button type="button"
+          class="text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-6 py-2.5">
+          Contact me
+        </button>
+      </a>
+      <a href="./res.pdf">
+        <button type="button"
+          class="text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-6 py-2.5">
+          Download Resume
+        </button>
+      </a>
+    </div>
+  </div>
+
+  <!-- Right Animation -->
+  <div class="w-full lg:w-1/2 flex justify-center">
+    <dotlottie-player
+      src="https://lottie.host/e3f7a4c6-7617-42d9-9f25-ce1d39805e65/yqx5px0Bgm.json"
+      background="transparent"
+      speed="1"
+      style="width: 300px; height: 300px;"
+      class="sm:w-[400px] sm:h-[400px] lg:w-[500px] lg:h-[500px]"
+      loop autoplay>
+    </dotlottie-player>
+  </div>
+
+</div>
+
+         <div id="About" class="flex flex-col lg:flex-row items-center justify-center gap-10 px-6 py-20">
+
+  <!-- Animation -->
+  <div class="w-full lg:w-1/2 flex justify-center pt-10 lg:pt-28 lg:pl-24">
+    <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
+    <dotlottie-player
+      src="https://lottie.host/63356ffd-ac80-473d-b202-3aa8054adef5/Z4hLkXdDrx.json"
+      background="transparent"
+      speed="1"
+      style="width: 300px; height: 300px;"
+      loop autoplay>
+    </dotlottie-player>
+  </div>
+
+  <!-- Text Content -->
+  <div class="w-full lg:w-1/2 pt-10 lg:pt-32 text-center lg:text-left">
+    <h2 class="pb-5 text-purple-600 text-2xl font-semibold">About me</h2>
+    <p class="text-white text-base leading-relaxed max-w-xl mx-auto lg:mx-0">
+      I'm a developer based in Lucknow, a city in Uttar Pradesh. A Full Stack Developer who wants to
+      explore every tech stack. My simple motto is to deliver perfect solutions to my clients' requirements.
+    </p>
+  </div>
+
+</div>
+
+          <div id="Education" class="px-6 md:px-12 lg:px-24 pt-24 max-w-screen-xl mx-auto">
+  <h2 class="text-purple-600 text-3xl font-semibold pb-10 text-center lg:text-left">Education</h2>
+
+  <div class="grid gap-6 md:grid-cols-2">
+    
+    <!-- MCA -->
+    <figure class="flex flex-col items-center justify-center p-6 text-center bg-gray-900 rounded-lg shadow">
+      <blockquote class="mb-4 text-gray-400">
+        <h3 class="text-xl font-semibold text-white">Master of Computer Applications</h3>
+        <p class="my-2">Integral University, Lucknow</p>
+      </blockquote>
+      <figcaption class="text-white text-sm space-y-1">
+        <div>2022 – 2024</div>
+        <div class="text-gray-400">CGPA: 8.60</div>
+      </figcaption>
+    </figure>
+
+    <!-- BCA -->
+    <figure class="flex flex-col items-center justify-center p-6 text-center bg-gray-900 rounded-lg shadow">
+      <blockquote class="mb-4 text-gray-400">
+        <h3 class="text-xl font-semibold text-white">Bachelor of Computer Applications</h3>
+        <p class="my-2">Integral University, Lucknow</p>
+      </blockquote>
+      <figcaption class="text-white text-sm space-y-1">
+        <div>2019 – 2022</div>
+        <div class="text-gray-400">CGPA: 8.68</div>
+      </figcaption>
+    </figure>
+
+    <!-- Intermediate -->
+    <figure class="flex flex-col items-center justify-center p-6 text-center bg-gray-900 rounded-lg shadow">
+      <blockquote class="mb-4 text-gray-400">
+        <h3 class="text-xl font-semibold text-white">Intermediate (ISC Board)</h3>
+        <p class="my-2">Christ Church College, Lucknow</p>
+      </blockquote>
+      <figcaption class="text-white text-sm space-y-1">
+        <div>2019</div>
+      </figcaption>
+    </figure>
+
+    <!-- High School -->
+    <figure class="flex flex-col items-center justify-center p-6 text-center bg-gray-900 rounded-lg shadow">
+      <blockquote class="mb-4 text-gray-400">
+        <h3 class="text-xl font-semibold text-white">High School (ICSE Board)</h3>
+        <p class="my-2">Christ Church College, Lucknow</p>
+      </blockquote>
+      <figcaption class="text-white text-sm space-y-1">
+        <div>2017</div>
+      </figcaption>
+    </figure>
+
+  </div>
+</div>
+
+<div id="Skills" class="pt-24 px-4 sm:px-6 md:px-12 lg:px-24 max-w-screen-xl mx-auto">
+  <h2 class="text-purple-600 text-3xl font-semibold mb-10 text-center lg:text-left">Skills</h2>
+
+  <div id="four" class="grid card grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 justify-items-center">
+    
+    <!-- Skill Icon -->
+    <div class="w-20 h-20 flex items-center justify-center bg-gray-900 rounded-lg shadow hover:scale-105 transition-transform duration-300">
+      <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" alt="TypeScript" class="h-10 w-10 object-contain" />
+    </div>
+
+    <div class="w-20 h-20 flex items-center justify-center bg-gray-900 rounded-lg shadow hover:scale-105 transition-transform duration-300">
+      <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" alt="JavaScript" class="h-10 w-10 object-contain" />
+    </div>
+
+    <div class="w-20 h-20 flex items-center justify-center bg-gray-900 rounded-lg shadow hover:scale-105 transition-transform duration-300">
+      <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" alt="HTML" class="h-10 w-10 object-contain" />
+    </div>
+
+    <div class="w-20 h-20 flex items-center justify-center bg-gray-900 rounded-lg shadow hover:scale-105 transition-transform duration-300">
+      <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" alt="CSS" class="h-10 w-10 object-contain" />
+    </div>
+
+    <div class="w-20 h-20 flex items-center justify-center bg-gray-900 rounded-lg shadow hover:scale-105 transition-transform duration-300">
+      <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" alt="Node.js" class="h-10 w-10 object-contain" />
+    </div>
+
+    <div class="w-20 h-20 flex items-center justify-center bg-gray-900 rounded-lg shadow hover:scale-105 transition-transform duration-300">
+      <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/angularjs/angularjs-original.svg" alt="Angular" class="h-10 w-10 object-contain" />
+    </div>
+
+    <div class="w-20 h-20 flex items-center justify-center bg-gray-900 rounded-lg shadow hover:scale-105 transition-transform duration-300">
+      <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/express/express-original.svg" alt="Express.js" class="h-10 w-10 object-contain invert" />
+    </div>
+
+    <div class="w-20 h-20 flex items-center justify-center bg-gray-900 rounded-lg shadow hover:scale-105 transition-transform duration-300">
+      <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bootstrap/bootstrap-original.svg" alt="Bootstrap" class="h-10 w-10 object-contain" />
+    </div>
+<!-- Tailwind CSS -->
+<div class="w-20 h-20 flex items-center justify-center bg-gray-900 rounded-lg shadow hover:scale-105 transition-transform duration-300">
+  <img src="https://www.vectorlogo.zone/logos/tailwindcss/tailwindcss-icon.svg" alt="Tailwind CSS" class="h-10 w-10 object-contain" />
+</div>
+
+    <div class="w-20 h-20 flex items-center justify-center bg-gray-900 rounded-lg shadow hover:scale-105 transition-transform duration-300">
+      <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg" alt="MySQL" class="h-10 w-10 object-contain" />
+    </div>
+
+    <div class="w-20 h-20 flex items-center justify-center bg-gray-900 rounded-lg shadow hover:scale-105 transition-transform duration-300">
+      <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg" alt="MongoDB" class="h-10 w-10 object-contain" />
+    </div>
+
+    <div class="w-20 h-20 flex items-center justify-center bg-gray-900 rounded-lg shadow hover:scale-105 transition-transform duration-300">
+      <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg" alt="Git" class="h-10 w-10 object-contain" />
+    </div>
+
+    <div class="w-20 h-20 flex items-center justify-center bg-gray-900 rounded-lg shadow hover:scale-105 transition-transform duration-300">
+      <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" alt="GitHub" class="h-10 w-10 object-contain invert" />
+    </div>
+
+    <div class="w-20 h-20 flex items-center justify-center bg-gray-900 rounded-lg shadow hover:scale-105 transition-transform duration-300">
+      <img src="https://www.vectorlogo.zone/logos/getpostman/getpostman-icon.svg" alt="Postman" class="h-10 w-10 object-contain" />
+    </div>
+
+    <div class="w-20 h-20 flex items-center justify-center bg-gray-900 rounded-lg shadow hover:scale-105 transition-transform duration-300">
+      <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg" alt="VS Code" class="h-10 w-10 object-contain" />
+    </div>
+
+    <div class="w-20 h-20 flex items-center justify-center bg-gray-900 rounded-lg shadow hover:scale-105 transition-transform duration-300">
+      <img src="https://cdn-icons-png.flaticon.com/512/4248/4248443.png" alt="OOP" class="h-10 w-10 object-contain" />
+    </div>
+
+  </div>
+</div>
+
+<div id="Experience" class="pt-24 px-4 sm:px-6 md:px-12 lg:px-24 max-w-screen-xl mx-auto">
+  <h2 class="text-purple-600 text-3xl font-semibold mb-6 text-center lg:text-left">Experience</h2>
+
+  <a href="#" class="block p-6 max-w-full bg-gray-900 rounded-lg shadow hover:shadow-md transition-shadow duration-300">
+    <h5 class="text-2xl font-semibold tracking-tight text-gray-200 mb-2">Sponsored Industrial Training</h5>
+    <p class="text-gray-400 mb-1">Softpro India – 2024</p>
+    <p class="text-gray-400">Worked on a website for a pharmaceutical company using <strong>Python Django</strong>.</p>
+  </a>
+</div>
+
+          <div id="Project" class="pt-24 px-4 sm:px-6 md:px-12 lg:px-24 max-w-screen-xl mx-auto">
+  <h2 class="text-purple-600 text-3xl font-semibold mb-8 text-center lg:text-left">Projects</h2>
+
+  <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+    <!-- Project 1 -->
+    <a href="#" class="block p-6 bg-gray-900 rounded-lg shadow hover:shadow-lg transition-shadow duration-300">
+      <h5 class="mb-2 text-2xl font-semibold text-white">PropSys</h5>
+      <p class="text-gray-400">Property Management System - <strong>MERN Stack</strong></p>
+      <p class="text-gray-400 mt-2">Built a full-stack property management system using Angular 18 with real API integration, featuring property listings,  booking functionality, and admin tools for managing properties and sites.</p>
+    </a>
+
+    <!-- Project 2 -->
+    <a href="#" class="block p-6 bg-gray-900 rounded-lg shadow hover:shadow-lg transition-shadow duration-300">
+      <h5 class="mb-2 text-2xl font-semibold text-white">Holistic</h5>
+      <p class="text-gray-400">Digital Health Ecosystem - <strong>React</strong></p>
+      <p class="text-gray-400 mt-2">Developed a digital health ecosystem integrating services like health assessments, lifestyle tracking, medical consultations, and personalized wellness plans using Angular and TypeScript.</p>
+    </a>
+
+    <!-- Project 3 -->
+    <a href="#" class="block p-6 bg-gray-900 rounded-lg shadow hover:shadow-lg transition-shadow duration-300">
+      <h5 class="mb-2 text-2xl font-semibold text-white">E-Petopia</h5>
+      <p class="text-gray-400">Pet Shop Portal - <strong>Django</strong></p>
+      <p class="text-gray-400 mt-2">Collaborated on an online pet shop platform using JavaScript and Django. Implemented product browsing, cart management, and integrated payment gateway.</p>
+    </a>
+  </div>
+</div>
+
+        <div id="Contact" class="pt-24 px-4 sm:px-6 lg:px-24 max-w-screen-xl mx-auto">
+  <div class="text-center mb-10">
+    <h1 class="text-3xl font-semibold text-gray-900 dark:text-gray-200">Contact Me</h1>
+    <p class="text-gray-500 dark:text-gray-400 mt-2">Fill up the form below to send me a message.</p>
+  </div>
+
+  <div class="max-w-3xl mx-auto bg-white dark:bg-gray-900 rounded-lg shadow p-6 sm:p-10">
+    <form action="https://api.web3forms.com/submit" method="POST" class="space-y-6">
+      <input type="hidden" name="access_key" value="78cc5ea7-8caf-42b4-84a1-6a5f61530dff" />
+      <input type="hidden" name="subject" value="New Submission from Web3Forms" />
+      <input type="checkbox" name="botcheck" class="hidden" />
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- First Name -->
+        <div>
+          <label class="block text-sm text-gray-600 dark:text-gray-400 mb-1" for="first_name">First Name</label>
+          <input type="text" name="name" id="first_name" placeholder="Saad" required
+            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-300" />
+        </div>
+
+        <!-- Last Name -->
+        <div>
+          <label class="block text-sm text-gray-600 dark:text-gray-400 mb-1" for="lname">Last Name</label>
+          <input type="text" name="last_name" id="lname" placeholder="Faisal" required
+            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-300" />
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Email -->
+        <div>
+          <label class="block text-sm text-gray-600 dark:text-gray-400 mb-1" for="email">Email Address</label>
+          <input type="email" name="email" id="email" placeholder="you@company.com" required
+            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-300" />
+        </div>
+
+        <!-- Phone -->
+        <div>
+          <label class="block text-sm text-gray-600 dark:text-gray-400 mb-1" for="phone">Phone Number</label>
+          <input type="text" name="phone" id="phone" placeholder="+91 12345-56789" required
+            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-300" />
+        </div>
+      </div>
+
+      <!-- Message -->
+      <div>
+        <label class="block text-sm text-gray-600 dark:text-gray-400 mb-1" for="message">Your Message</label>
+        <textarea id="message" name="message" rows="5" placeholder="Your message..."
+          class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-300"
+          required></textarea>
+      </div>
+
+      <!-- Submit Button -->
+      <div>
+        <button type="submit"
+          class="w-full py-3 px-6 bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 text-white rounded-md hover:bg-gradient-to-br transition-colors">
+          Send Message
+        </button>
+      </div>
+
+      <p id="result" class="text-center text-sm text-gray-400"></p>
+    </form>
+  </div>
+</div>
+
+        </main>
+
+
+ <footer class="w-full">
+  <div class="max-w-screen-xl mx-auto px-4 py-6 sm:px-6 md:py-8">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      <!-- Logo -->
+      <div class="flex justify-center sm:justify-start">
+        <img src="./logo4.png" alt="Saad Logo" class="h-8" />
+      </div>
+
+      <!-- Links -->
+      <ul class="flex flex-wrap justify-center sm:justify-end items-center gap-4 text-sm font-medium text-gray-500 dark:text-gray-400">
+        <li>
+          <a href="#About" class="hover:underline">About</a>
+        </li>
+        <li>
+          <a href="#Contact" class="hover:underline">Contact Me</a>
+        </li>
+        <li>
+          <a href="./res.pdf" class="hover:underline">Download Resume</a>
+        </li>
+      </ul>
+    </div>
+
+    <hr class="my-6 border-gray-200 dark:border-gray-700" />
+
+    <!-- Copyright -->
+    <p class="text-center text-sm text-gray-500 dark:text-gray-400">
+      © 2024 <strong>SAAD™</strong>. All Rights Reserved.
+    </p>
+  </div>
+</footer>
+
+
+
+        <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
+        <script>
+            var typed = new Typed('#element', {
+                strings: ['Web Developer', 'Java Programmer.'],
+                typeSpeed: 50,
+            });
+        </script>
+    </div>
+
+</body>
+
+</html>
