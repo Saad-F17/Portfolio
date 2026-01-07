@@ -1,0 +1,13 @@
+🎮 Interactive Features List: Here are all the cool interactive elements currently active on your site:
+
+Aurora Mode: Click the logo 5 times to toggle a galaxy glow effect.
+Konami Code: Type ↑↑↓↓←→←→BA for a confetti celebration!
+Sparkle Trail: Stardust follows your mouse cursor.
+Magnetic Buttons: Buttons gently gravitate towards your cursor.
+Text Scramble: Your name glitches into code characters on hover.
+3D Tilt Cards: All project & skill cards tilt in 3D space when hovered.
+Interactive 3D Background: Floating geometric shapes move with your mouse (Parallax).
+Wiggling Icons: Section icons wiggle when you scroll them into view.
+Random Tooltips: Hover over skill items for surprise encouraging messages.
+Footer Surprise: A special "Thank you" message appears when you scroll to the very bottom.
+Click Ripple: A ripple effect expands wherever you click.
