@@ -1149,7 +1149,17 @@
 
       if (scrolledToBottom && !shownFooterSurprise) {
         shownFooterSurprise = true;
-        showTooltip(window.innerWidth / 2, window.innerHeight - 100, "🎉 You scrolled all the way! You're amazing! 🎉");
+        showTooltip(0, 0, "🎉 You scrolled all the way! You're amazing! 🎉");
+        
+        // Override position for bottom right corner
+        if (tooltipElement) {
+          tooltipElement.style.left = 'auto';
+          tooltipElement.style.top = 'auto';
+          tooltipElement.style.right = '30px';
+          tooltipElement.style.bottom = '30px';
+          // Ensure it's above other elements
+          tooltipElement.style.zIndex = '10001';
+        }
       }
     });
 
